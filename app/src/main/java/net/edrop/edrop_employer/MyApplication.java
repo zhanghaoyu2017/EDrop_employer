@@ -64,7 +64,7 @@ public class MyApplication extends Application {
                     return processName;
                 }
             } catch (Exception e) {
-                // Log.d("Process", "Error>> :"+ e.toString());
+                e.printStackTrace();
             }
         }
         return processName;

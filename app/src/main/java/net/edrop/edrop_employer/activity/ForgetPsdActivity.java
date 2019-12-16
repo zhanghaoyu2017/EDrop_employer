@@ -45,8 +45,8 @@ import static net.edrop.edrop_employer.utils.Constant.UPDATE_USER_FAIL;
 import static net.edrop.edrop_employer.utils.Constant.UPDATE_USER_SUCCESS;
 
 public class ForgetPsdActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
-    private String APPKEY = "2d3bde91c4a25";
-    private String APPSECRET = "0f4a5150f9707ef7423d60cf7aaf3ae8";
+    private String APPKEY = "2d7e9afd73ca4";
+    private String APPSECRET = "35c879e80904122eb8733123d2d42864";
     private TextView tv;
     private SeekBar seekBar;
     private int i = 60;//倒计时显示   可以手动更改

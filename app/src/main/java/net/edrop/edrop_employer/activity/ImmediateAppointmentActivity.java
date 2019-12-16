@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
@@ -36,8 +35,6 @@ import net.edrop.edrop_employer.utils.SharedPreferencesUtils;
 import net.edrop.edrop_employer.utils.SystemTransUtil;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -74,7 +71,7 @@ public class ImmediateAppointmentActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                Intent intent = new Intent(ImmediateAppointmentActivity.this, net.edrop.edrop_employer.activity.ShowOrders.class);
+                Intent intent = new Intent(ImmediateAppointmentActivity.this, ShowOrdersActivity.class);
                 String str = (String) msg.obj;
                 intent.putExtra("orderjson", str);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

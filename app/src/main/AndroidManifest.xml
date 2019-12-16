@@ -98,10 +98,12 @@
         <activity android:name=".activity.FeedBackActivity" />
         <activity android:name=".activity.FeedBackOption" />
         <activity android:name=".activity.ImmediateAppointmentActivity" />
-        <activity android:name=".activity.ShowOrders" />
+        <activity android:name=".activity.ShowOrdersActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.VersionActivity" />
         <activity android:name=".activity.ClearCacheActivity" />
+        <activity android:name=".activity.PhoneLoginActivity"/>
+        <activity android:name=".activity.TestPhoneNumActivity" />
         <!-- QQ登录配置 start -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -122,6 +124,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- QQ登录配置 end -->
+
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"

@@ -31,8 +31,8 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 public class PhoneLoginActivity extends Activity implements View.OnClickListener{
-    private String APPKEY = "2d3bde91c4a25";
-    private String APPSECRET = "0f4a5150f9707ef7423d60cf7aaf3ae8";
+    private String APPKEY = "2d7e9afd73ca4";
+    private String APPSECRET = "35c879e80904122eb8733123d2d42864";
     private Button btnPwdLogin;
     // 手机号输入框
     private EditText inputPhoneEt;

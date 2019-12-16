@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,7 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ShowOrders extends Activity {
+public class ShowOrdersActivity extends Activity {
     private SmartRefreshLayout refreshLayout;
     private List<Order> orderList = null;
     private ListView listView;
@@ -59,10 +58,10 @@ public class ShowOrders extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new SystemTransUtil().trans(ShowOrders.this);
+        new SystemTransUtil().trans(ShowOrdersActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_orders);
-        SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(ShowOrders.this, "loginInfo");
+        SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(ShowOrdersActivity.this, "loginInfo");
         userId = loginInfo.getInt("userId");
 
         findView();
@@ -80,7 +79,7 @@ public class ShowOrders extends Activity {
     }
 
     private void setMyAdapter() {
-        ShowOrderAdapter adapter = new ShowOrderAdapter(orderList, ShowOrders.this, R.layout.item_showorders_layout);
+        ShowOrderAdapter adapter = new ShowOrderAdapter(orderList, ShowOrdersActivity.this, R.layout.item_showorders_layout);
         listView.setAdapter(adapter);
     }
 
@@ -127,7 +126,7 @@ public class ShowOrders extends Activity {
         imvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowOrders.this,Main2Activity.class);
+                Intent intent = new Intent(ShowOrdersActivity.this,Main2Activity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -137,7 +136,7 @@ public class ShowOrders extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             //启动一个意图,回到桌面
-            Intent intent = new Intent(ShowOrders.this,Main2Activity.class);
+            Intent intent = new Intent(ShowOrdersActivity.this,Main2Activity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;

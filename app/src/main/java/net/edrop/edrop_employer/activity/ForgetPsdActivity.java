@@ -102,7 +102,7 @@ public class ForgetPsdActivity extends AppCompatActivity implements SeekBar.OnSe
                 editor.commit();
 //                Toast.makeText(ForgetPsdActivity.this,  "更新成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ForgetPsdActivity.this, net.edrop.edrop_employer.activity.LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             } else if (msg.what == PSD_FAIL) {
 //                Toast.makeText(ForgetPsdActivity.this, "更新成功", Toast.LENGTH_SHORT).show();

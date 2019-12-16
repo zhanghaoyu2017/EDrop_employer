@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             boolean isAuto = sharedPreferences.getBoolean("isAuto");
             if (isAuto) {
                 Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         } catch (Exception e) {
@@ -230,7 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.PhoneLoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
@@ -238,7 +238,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.RegisterActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
@@ -258,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     login(username, password);
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 } else if (username.equals("ls") && password.equals("123456")) {
@@ -269,7 +269,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     login(username, password);
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 } else if (isSelected) {
@@ -289,7 +289,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.tv_forget_psd:
                 Intent intent = new Intent(LoginActivity.this, ForgetPsdActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 break;
         }
@@ -482,7 +482,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putBoolean("isAuto", true);
                         editor.commit();
                         Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
 

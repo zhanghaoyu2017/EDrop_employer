@@ -101,12 +101,12 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
 
     //三级联动
     private CityPickerView mPicker = new CityPickerView();
-    private TextView tvSelect;
+    private TextView tvSelectCity;
     private EditText etChangePhone;
     private TextView tvDetailAddress;
     private Button btnUpdata;
     private String strSex;
-    private EditText tvUserName;
+    private EditText edUserName;
     //照片
     private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private Button btnSelectImg;
@@ -158,10 +158,10 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
             } else if (msg.what == BASE_SUCCESS) {
                 SharedPreferencesUtils sp = new SharedPreferencesUtils(FillPersonalInforActivity.this, "loginInfo");
                 SharedPreferences.Editor editor = sp.getEditor();
-                editor.putString("username", tvUserName.getText().toString().trim());
+                editor.putString("username", edUserName.getText().toString().trim());
                 editor.putString("gender", strSex);
                 editor.putString("phone", etChangePhone.getText().toString().trim());
-                editor.putString("address", tvSelect.getText().toString());
+                editor.putString("address", tvSelectCity.getText().toString());
                 editor.putString("detailAddress", tvDetailAddress.getText().toString().trim());
                 editor.commit();
                 Toast.makeText(FillPersonalInforActivity.this, msg.obj + "", Toast.LENGTH_SHORT).show();
@@ -189,8 +189,9 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
         view1 = mInflater.inflate(R.layout.item_fill_base_info, null);
         etChangePhone = view1.findViewById(R.id.et_phone_select);
         etChangePhone.setCursorVisible(false);//设置光标不可见
-        tvUserName = view1.findViewById(R.id.tv_base_name);
-        tvSelect = view1.findViewById(R.id.tv_select);
+        edUserName = view1.findViewById(R.id.tv_base_name);
+        edUserName.setCursorVisible(false);
+        tvSelectCity = view1.findViewById(R.id.tv_select_city);
         tvDetailAddress = view1.findViewById(R.id.tv_detail_address);
         tvDetailAddress.setCursorVisible(false);//设置光标不可见
         btnUpdata = view1.findViewById(R.id.btn_update);
@@ -261,11 +262,11 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
         tvDetailAddress.setText(detailAddress);
         userId = loginInfo.getInt("userId");
         if (address.equals("")) {
-            tvSelect.setText("请选择城市");
+            tvSelectCity.setText("请选择城市");
         } else {
-            tvSelect.setText(address);
+            tvSelectCity.setText(address);
         }
-        tvUserName.setText(username);
+        edUserName.setText(username);
         etChangePhone.setText(phone);
         switch (gender) {
             case "boy":
@@ -362,7 +363,7 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
         btnSave.setOnClickListener(new MyLinsener());
         btnOk.setOnClickListener(new MyLinsener());
         btnSelectImg.setOnClickListener(new MyLinsener());
-        tvSelect.setOnClickListener(new MyLinsener());
+        tvSelectCity.setOnClickListener(new MyLinsener());
         tvDetailAddress.setOnClickListener(new MyLinsener());
         btnUpdata.setOnClickListener(new MyLinsener());
         headDeafultImg1.setOnClickListener(new MyLinsener());
@@ -393,7 +394,7 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
                 case R.id.et_phone_select:
                     etChangePhone.setCursorVisible(true);//设置光标可见
                     break;
-                case R.id.tv_select:
+                case R.id.tv_select_city:
                     hideKeyboard();
                     CityConfig cityConfig = new CityConfig.Builder()
                             .title("选择城市")//标题
@@ -427,7 +428,7 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
                         @Override
                         public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
                             //省份province-城市city-地区district
-                            tvSelect.setText(province + "\t" + city + "\t" + district);
+                            tvSelectCity.setText(province + "\t" + city + "\t" + district);
                         }
 
                         @Override
@@ -673,10 +674,10 @@ public class FillPersonalInforActivity extends AppCompatActivity implements Easy
         //创建FormBody对象
         FormBody formBody = new FormBody.Builder()
                 .add("id", userId + "")
-                .add("username", tvUserName.getText().toString())
+                .add("username", edUserName.getText().toString())
                 .add("phone", etChangePhone.getText().toString())
                 .add("gender", strSex)
-                .add("address", tvSelect.getText().toString())
+                .add("address", tvSelectCity.getText().toString())
                 .add("detailAddress", tvDetailAddress.getText().toString())
                 .build();
         Request request = new Request.Builder()

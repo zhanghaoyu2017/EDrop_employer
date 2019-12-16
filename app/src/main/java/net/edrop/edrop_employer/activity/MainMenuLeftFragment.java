@@ -63,7 +63,6 @@ public class MainMenuLeftFragment extends Fragment {
     private TextView userName;
     private TextView tvMoney;
     private LinearLayout myMoney;
-    private LinearLayout myAddress;
     private LinearLayout myOrder;
     private LinearLayout inviteFriends;
     private LinearLayout businessCooperation;
@@ -131,7 +130,6 @@ public class MainMenuLeftFragment extends Fragment {
         userImg = myView.findViewById(R.id.iv_userImg);
         userName = myView.findViewById(R.id.tv_userName);
         myMoney = myView.findViewById(R.id.myMoney);
-        myAddress = myView.findViewById(R.id.myAddress);
         myOrder = myView.findViewById(R.id.myOrder);
         inviteFriends = myView.findViewById(R.id.inviteFriends);
         businessCooperation = myView.findViewById(R.id.businessCooperation);
@@ -237,7 +235,6 @@ public class MainMenuLeftFragment extends Fragment {
         userName.setOnClickListener(new MyListener());
         userImg.setOnClickListener(new MyListener());
         myMoney.setOnClickListener(new MyListener());
-        myAddress.setOnClickListener(new MyListener());
         myOrder.setOnClickListener(new MyListener());
         inviteFriends.setOnClickListener(new MyListener());
         businessCooperation.setOnClickListener(new MyListener());
@@ -265,9 +262,6 @@ public class MainMenuLeftFragment extends Fragment {
                     Intent intent = new Intent(myView.getContext(), net.edrop.edrop_employer.activity.MyMoneyActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    break;
-                case R.id.myAddress:
-                    Toast.makeText(getActivity(), "我的地址", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.myOrder:
                     SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(myView.getContext(), "loginInfo");

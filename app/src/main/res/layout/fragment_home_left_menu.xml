@@ -130,47 +130,6 @@
                 android:src="@drawable/right" />
         </LinearLayout>
 
-        <!--我的地址-->
-        <LinearLayout
-            android:id="@+id/myAddress"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_40"
-
-            android:layout_marginTop="@dimen/size_5"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/size_25"
-                android:layout_height="@dimen/size_25"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/size_30"
-                android:src="@drawable/address" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:text="我的地址"
-                android:textColor="#000"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textColor="#000"
-                android:textSize="13dp" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_25"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/right" />
-        </LinearLayout>
 
         <!--邀请好友-->
         <LinearLayout

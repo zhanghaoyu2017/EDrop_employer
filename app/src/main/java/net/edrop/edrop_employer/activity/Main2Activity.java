@@ -128,9 +128,9 @@ public class Main2Activity extends AppCompatActivity {
     private void initData() {
         mFragments = new ArrayList<Fragment>();
         mFragments.add(HomePageFragment.newInstance("主页"));
-        mFragments.add(net.edrop.edrop_employer.activity.ServicePageFragment.newInstance("代扔"));
+        mFragments.add(net.edrop.edrop_employer.activity.ServicePageFragment.newInstance("接单"));
         mFragments.add(net.edrop.edrop_employer.activity.MsgPageFragment.newInstance("消息"));
-        mFragments.add(CommunityPageFragment.newInstance("社区"));
+        mFragments.add(CommunityPageFragment.newInstance("导航"));
         initIndexFragmentAdapter();
     }
 

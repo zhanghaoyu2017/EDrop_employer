@@ -51,7 +51,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePageFragment extends Fragment implements TabHost.TabContentFactory, GestureDetector.OnGestureListener {
+public class HomePageFragment extends Fragment implements TabHost.TabContentFactory {
     private Activity activity;
     private View view;
     //搜索框控件
@@ -64,8 +64,6 @@ public class HomePageFragment extends Fragment implements TabHost.TabContentFact
     private List<View> dots;//小点
     // 图片数据，包括图片标题、图片链接、数据、点击要打开的网站（点击打开的网页或一些提示指令）
     private List<ImageInfo> imageInfoList;
-    //定义手势检测器实例
-    private GestureDetector detector;
 
     private net.edrop.edrop_employer.activity.Main2Activity main2Activity;
     private LinearLayout recyclable;
@@ -87,18 +85,6 @@ public class HomePageFragment extends Fragment implements TabHost.TabContentFact
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        //创建手势检测器
-        detector = new GestureDetector(getActivity(),this);
-        net.edrop.edrop_employer.activity.Main2Activity.MyOnTouchListener myOnTouchListener = new net.edrop.edrop_employer.activity.Main2Activity.MyOnTouchListener() {
-            @Override
-            public boolean onTouch(MotionEvent ev) {
-                boolean result = detector.onTouchEvent(ev);
-                return result;
-            }
-        };
-        main2Activity=(net.edrop.edrop_employer.activity.Main2Activity)getActivity();
-        ((net.edrop.edrop_employer.activity.Main2Activity) getActivity()).registerMyOnTouchListener(myOnTouchListener);
-
         initView();
         initEvent();
         setListener();
@@ -315,52 +301,6 @@ public class HomePageFragment extends Fragment implements TabHost.TabContentFact
             dots.add(view.findViewById(dotId));
         }
         return dots;
-    }
-
-    /*----------------------------手势滑动-------------------------------------*/
-    public void flingLeft() {//自定义方法：处理向左滑动事件
-        main2Activity.OpenLeftMenu();
-    }
-
-    public void flingRight() {//自定义方法：处理向右滑动事件
-
-    }
-
-    @Override
-    public boolean onDown(MotionEvent arg0) {
-        return false;
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        try {
-            if (e1.getX() - e2.getX() < -300) {
-                flingLeft();
-                return true;
-            } else if (e1.getX() - e2.getX() > 300) {
-                flingRight();
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) { }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) { }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
     }
 
 }

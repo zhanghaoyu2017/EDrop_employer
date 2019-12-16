@@ -266,7 +266,7 @@
             android:value="baidu_market" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="92d2ae475663c07cfca31b8a" />
+            android:value="8d0195a1db15b66cf5302fe4" />
         <!-- </>值来自开发者平台取得的AppKey -->
     </application>
 

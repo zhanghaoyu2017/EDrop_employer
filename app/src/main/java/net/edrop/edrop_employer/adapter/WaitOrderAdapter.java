@@ -11,11 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import net.edrop.edrop_employer.R;
-import net.edrop.edrop_employer.entity.Order;
 import net.edrop.edrop_employer.entity.Order;
 import net.edrop.edrop_employer.utils.Constant;
 import net.edrop.edrop_employer.utils.SharedPreferencesUtils;
@@ -38,7 +34,7 @@ import okhttp3.Response;
  * Date: 2019/12/16
  * Time: 15:05
  */
-public class AcceptOrderAdapter extends BaseAdapter {
+public class WaitOrderAdapter extends BaseAdapter {
     // 原始数据
     private List<Order> dataSource = null;
     // 上下文环境
@@ -47,7 +43,7 @@ public class AcceptOrderAdapter extends BaseAdapter {
     private int item_layout_id;
     private OkHttpClient okHttpClient = new OkHttpClient();
 
-    public AcceptOrderAdapter(List<Order> dataSource, Context context, int item_layout_id) {
+    public WaitOrderAdapter(List<Order> dataSource, Context context, int item_layout_id) {
         this.dataSource = dataSource;
         this.context = context;
         this.item_layout_id = item_layout_id;
@@ -58,11 +54,6 @@ public class AcceptOrderAdapter extends BaseAdapter {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == -1) {
-                getAcceptOrdersByOkHttp();
-            }else if (msg.what==888){
-                String json = (String) msg.obj;
-                dataSource = new Gson().fromJson(json, new TypeToken<List<Order>>() {
-                }.getType());
                 notifyDataSetChanged();
             }
         }
@@ -92,12 +83,12 @@ public class AcceptOrderAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(item_layout_id, null);
-            viewHolder.tvName = convertView.findViewById(R.id.tv_acceptorder_name);
-            viewHolder.tvPhone = convertView.findViewById(R.id.tv_acceptorder_phone);
-            viewHolder.tvAddress = convertView.findViewById(R.id.tv_acceptorder_address);
-            viewHolder.tvTime = convertView.findViewById(R.id.tv_acceptorder_time);
-            viewHolder.tvNumber = convertView.findViewById(R.id.tv_acceptorder_number);
-            viewHolder.btnAcceptOrder = convertView.findViewById(R.id.btn_acceptOrders);
+            viewHolder.tvName = convertView.findViewById(R.id.tv_waitorder_name);
+            viewHolder.tvPhone = convertView.findViewById(R.id.tv_waitorder_phone);
+            viewHolder.tvAddress = convertView.findViewById(R.id.tv_waitorder_address);
+            viewHolder.tvTime = convertView.findViewById(R.id.tv_waitorder_time);
+            viewHolder.tvNumber = convertView.findViewById(R.id.tv_waitorder_number);
+            viewHolder.btnDoneOrder = convertView.findViewById(R.id.btn_doneOrders);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -117,11 +108,11 @@ public class AcceptOrderAdapter extends BaseAdapter {
         final int userId = loginInfo.getInt("userId");
         final int orderId = order.getId();
 
-        viewHolder.btnAcceptOrder.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btnDoneOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("test", userId + "=========" + orderId);
-                acceptOrder(userId, orderId);
+//                doneOrder(userId, orderId);
 
             }
         });
@@ -135,10 +126,10 @@ public class AcceptOrderAdapter extends BaseAdapter {
         public TextView tvAddress;
         public TextView tvTime;
         public TextView tvNumber;
-        private Button btnAcceptOrder;
+        private Button btnDoneOrder;
     }
 
-    private void acceptOrder(int userId, int orderId) {
+    private void doneOrder(int userId, int orderId) {
         FormBody formBody = new FormBody.Builder()
                 .add("userId", userId + "").add("orderId", orderId + "").build();
         Request request = new Request.Builder()
@@ -162,33 +153,5 @@ public class AcceptOrderAdapter extends BaseAdapter {
             }
         });
 
-    }
-    /**
-     * 获取全部代接订单
-     */
-    private void getAcceptOrdersByOkHttp() {
-        FormBody formBody = new FormBody.Builder()
-                .add("state", -1 + "").build();
-        Request request = new Request.Builder()
-                .url(Constant.BASE_URL + "getOrderByState")
-                .post(formBody)
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String string = response.body().string();
-
-                Message message = new Message();
-                message.what = 888;
-                message.obj = string;
-                handler.sendMessage(message);
-            }
-        });
     }
 }

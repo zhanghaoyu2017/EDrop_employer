@@ -25,8 +25,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import net.edrop.edrop_employer.R;
 import net.edrop.edrop_employer.adapter.AcceptOrderAdapter;
 import net.edrop.edrop_employer.adapter.MyPagerAdapter;
+import net.edrop.edrop_employer.adapter.WaitOrderAdapter;
 import net.edrop.edrop_employer.entity.Order;
 import net.edrop.edrop_employer.utils.Constant;
+import net.edrop.edrop_employer.utils.SharedPreferencesUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,24 +54,39 @@ public class ServicePageFragment extends Fragment {
     private ViewPager mViewPager;
     private LayoutInflater mInflater;
     private ListView listView1;
+    private ListView listView2;
+    private ListView listView3;
     private List<String> mTitleList = new ArrayList<String>();//页卡标题集合
     private View view1, view2, view3;//页卡视图
     private List<View> mViewList = new ArrayList<>();//页卡视图集合
     private OkHttpClient okHttpClient;
-    private List<Order> orderList = null;
+    private List<Order>  orderList1= null;
+    private List<Order>  orderList2= null;
+    private List<Order>  orderList3= null;
     //接单控件
     private SmartRefreshLayout refreshLayout1;
+    private SmartRefreshLayout refreshLayout2;
+    private SmartRefreshLayout refreshLayout3;
+    private int userId;
     private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == -1) {
                 String json = (String) msg.obj;
-                orderList = new Gson().fromJson(json, new TypeToken<List<Order>>() {
+                orderList1 = new Gson().fromJson(json, new TypeToken<List<Order>>() {
                 }.getType());
                 refreshLayout1.finishRefresh();
-                setMyAdapter();
+                AcceptOrderAdapter adapter = new AcceptOrderAdapter(orderList1, view.getContext(), R.layout.item_acceptorders_layout);
+                listView1.setAdapter(adapter);
 //                Log.e("a", orderList.toString());
+            }else if (msg.what ==0){
+                String json = (String) msg.obj;
+                orderList2 = new Gson().fromJson(json, new TypeToken<List<Order>>() {
+                }.getType());
+                refreshLayout2.finishRefresh();
+                WaitOrderAdapter adapter = new WaitOrderAdapter(orderList2, view.getContext(), R.layout.item_waitorders_layout);
+                listView2.setAdapter(adapter);
             }
 
         }
@@ -83,6 +100,12 @@ public class ServicePageFragment extends Fragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 getAcceptOrdersByOkHttp();
 
+            }
+        });
+        refreshLayout2.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+               getWaitOrdersByOkHttp(userId);
             }
         });
 
@@ -101,31 +124,28 @@ public class ServicePageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_service_page, container, false);
-
+        SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(view.getContext(), "loginInfo");
+        userId = loginInfo.getInt("userId");
         initView();
         initTabLayout();
         setRefreshListeners();
+
         return view;
-    }
-
-    private void setMyAdapter() {
-
-        AcceptOrderAdapter adapter = new AcceptOrderAdapter(orderList, view.getContext(), R.layout.item_acceptorders_layout);
-        listView1.setAdapter(adapter);
-
     }
 
     private void setmTabLayoutListener() {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.e("aaa", "切换" + tab.getText().toString());
                 //选择时触发
                 switch (tab.getPosition()) {
                     case 0:
                         Log.e("aaa", "切换到了" + tab.getText().toString());
 
                         getAcceptOrdersByOkHttp();
+                        break;
+                    case 1:
+                        getWaitOrdersByOkHttp(userId);
                         break;
                 }
             }
@@ -144,6 +164,39 @@ public class ServicePageFragment extends Fragment {
 
     }
 
+    /**
+     * 获取当前工作人员的未完成订单
+     * @param userId
+     */
+    private void getWaitOrdersByOkHttp(int userId) {
+        FormBody formBody = new FormBody.Builder()
+                .add("state", 0 + "").add("userId",userId+"").build();
+        Request request = new Request.Builder()
+                .url(Constant.BASE_URL + "getOrderDoing")
+                .post(formBody)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+
+                Message message = new Message();
+                message.what = 0;
+                message.obj = string;
+                handler.sendMessage(message);
+            }
+        });
+    }
+
+    /**
+     * 获取全部代接订单
+     */
     private void getAcceptOrdersByOkHttp() {
         FormBody formBody = new FormBody.Builder()
                 .add("state", -1 + "").build();
@@ -185,7 +238,13 @@ public class ServicePageFragment extends Fragment {
         refreshLayout1.setRefreshHeader(new ClassicsHeader(view.getContext()));
         listView1 = view1.findViewById(R.id.lv_acceptOrders);
         view2 = mInflater.inflate(R.layout.item_service_wait_order, null);
+        refreshLayout2 = view2.findViewById(R.id.wait_smart_layout);
+        refreshLayout2.setRefreshHeader(new ClassicsHeader(view.getContext()));
+        listView2 = view2.findViewById(R.id.lv_waitOrders);
         view3 = mInflater.inflate(R.layout.item_service_done_order, null);
+        refreshLayout3 = view3.findViewById(R.id.done_smart_layout);
+        refreshLayout3.setRefreshHeader(new ClassicsHeader(view.getContext()));
+        listView3 = view3.findViewById(R.id.lv_doneOrders);
 
         //添加页卡视图
         mViewList.add(view1);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f7f7f7"
+    android:orientation="vertical">
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/accept_smart_layout"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_width="match_parent"
+        android:background="#F5F4F9"
+        android:layout_height="match_parent">
+
+
+        <ListView
+            android:id="@+id/lv_acceptOrders"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:divider="#00000000"
+            android:dividerHeight="20dp"
+            android:scrollbars="none"
+            android:layout_marginBottom="65dp"
+            android:layout_height="match_parent"></ListView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

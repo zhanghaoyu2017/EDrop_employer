@@ -16,11 +16,11 @@ import net.edrop.edrop_employer.R;
  * Date: 2019/11/25
  * Time: 16:42
  */
-public class CommunityPageFragment extends Fragment {
+public class NavigatePageFragment extends Fragment {
     private static final String SECTION_STRING = "fragment_string";
 
-    public static CommunityPageFragment newInstance(String sectionNumber) {
-        CommunityPageFragment fragment = new CommunityPageFragment();
+    public static NavigatePageFragment newInstance(String sectionNumber) {
+        NavigatePageFragment fragment = new NavigatePageFragment();
         Bundle args = new Bundle();
         args.putString(SECTION_STRING, sectionNumber);
         fragment.setArguments(args);
@@ -29,7 +29,7 @@ public class CommunityPageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View newView = inflater.inflate(R.layout.fragment_community_page, container, false);
+        View newView = inflater.inflate(R.layout.fragment_navigae_page, container, false);
         return newView;
     }
 }

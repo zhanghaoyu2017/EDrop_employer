@@ -2,7 +2,6 @@ package net.edrop.edrop_employer.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -63,9 +62,6 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         //初始化控件
         initViews();
-        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(Main2Activity.this,"loginInfo");
-//        String userType = sharedPreferencesUtils.getString("userType","");
-
         //初始化数据
         initData();
         //初始化控件的点击事件
@@ -130,7 +126,7 @@ public class Main2Activity extends AppCompatActivity {
         mFragments.add(HomePageFragment.newInstance("主页"));
         mFragments.add(net.edrop.edrop_employer.activity.ServicePageFragment.newInstance("接单"));
         mFragments.add(net.edrop.edrop_employer.activity.MsgPageFragment.newInstance("消息"));
-        mFragments.add(CommunityPageFragment.newInstance("导航"));
+        mFragments.add(NavigatePageFragment.newInstance("导航"));
         initIndexFragmentAdapter();
     }
 
@@ -268,11 +264,11 @@ public class Main2Activity extends AppCompatActivity {
                 if (index == 0) {
                     navTitle.setText("主页");
                 } else if (index == 1) {
-                    navTitle.setText("代扔服务");
+                    navTitle.setText("接单");
                 } else if (index == 2) {
                     navTitle.setText("消息");
                 } else {
-                    navTitle.setText("社区动态");
+                    navTitle.setText("导航");
                 }
                 index_vp_fragment_list_top.setCurrentItem(index, false);
             }

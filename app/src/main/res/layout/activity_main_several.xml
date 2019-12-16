@@ -2,28 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/start_background"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="#fff">
-
+        android:layout_weight="3">
         <ImageView
             android:layout_width="574px"
             android:layout_height="520px"
             android:layout_centerInParent="true"
             android:src="@drawable/start33" />
-
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="#fff">
-
+        android:layout_weight="2">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -35,7 +29,6 @@
             android:text="ⓒ2019-2020   de_dust2小组版权所有"
             android:textColor="#808080"
             android:textSize="30px" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_50"
@@ -43,7 +36,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/size_80"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -52,7 +44,6 @@
                 android:text="一   点  分  类"
                 android:textColor="#111111"
                 android:textSize="@dimen/size_18" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -61,12 +52,7 @@
                 android:text="聚   成  绿  洲"
                 android:textColor="#111111"
                 android:textSize="@dimen/size_18" />
-
         </LinearLayout>
-
-
     </RelativeLayout>
-
-
 </LinearLayout>
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
@@ -40,8 +40,9 @@
                 android:textSize="60px" />
 
             <Button
-                android:layout_width="351px"
-                android:layout_height="141px"
+                android:id="@+id/btn_intoApp"
+                android:layout_width="340px"
+                android:layout_height="130px"
                 android:layout_below="@+id/tv_baohu_one"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_10"

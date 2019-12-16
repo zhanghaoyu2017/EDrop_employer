@@ -154,13 +154,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //成功打开权限
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        Toast.makeText(this, "相关权限获取成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "相关权限获取成功", Toast.LENGTH_SHORT).show();
     }
 
     //用户未同意权限
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        Toast.makeText(this, "请同意相关权限，否则功能无法使用", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "请同意相关权限，否则功能无法使用", Toast.LENGTH_SHORT).show();
     }
 
     //判断是否是第一次登陆

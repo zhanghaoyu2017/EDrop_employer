@@ -11,6 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import net.edrop.edrop_employer.R;
 import net.edrop.edrop_employer.entity.Order;
 import net.edrop.edrop_employer.utils.Constant;
@@ -43,6 +46,7 @@ public class WaitOrderAdapter extends BaseAdapter {
     private int item_layout_id;
     private OkHttpClient okHttpClient = new OkHttpClient();
 
+
     public WaitOrderAdapter(List<Order> dataSource, Context context, int item_layout_id) {
         this.dataSource = dataSource;
         this.context = context;
@@ -53,7 +57,13 @@ public class WaitOrderAdapter extends BaseAdapter {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == -1) {
+            if (msg.what == 1) {
+                int userId= (int) msg.obj;
+                getWaitOrdersByOkHttp(userId);
+            } else if (msg.what == 666) {
+                String json = (String) msg.obj;
+                dataSource = new Gson().fromJson(json, new TypeToken<List<Order>>() {
+                }.getType());
                 notifyDataSetChanged();
             }
         }
@@ -112,7 +122,7 @@ public class WaitOrderAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Log.e("test", userId + "=========" + orderId);
-//                doneOrder(userId, orderId);
+                doneOrder(orderId,userId);
 
             }
         });
@@ -129,11 +139,11 @@ public class WaitOrderAdapter extends BaseAdapter {
         private Button btnDoneOrder;
     }
 
-    private void doneOrder(int userId, int orderId) {
+    private void doneOrder(final int orderId,final int userId) {
         FormBody formBody = new FormBody.Builder()
-                .add("userId", userId + "").add("orderId", orderId + "").build();
+                .add("orderId", orderId + "").add("state", 1 + "").build();
         Request request = new Request.Builder()
-                .url(Constant.BASE_URL + "receiveOrder")
+                .url(Constant.BASE_URL + "orderFinish")
                 .post(formBody)
                 .build();
         Call call = okHttpClient.newCall(request);
@@ -148,10 +158,42 @@ public class WaitOrderAdapter extends BaseAdapter {
                 String string = response.body().string();
 
                 Message message = new Message();
-                message.what = -1;
+                message.what = 1;
+                message.obj = userId;
                 handler.sendMessage(message);
             }
         });
 
+    }
+
+    /**
+     * 获取当前工作人员的未完成订单
+     *
+     * @param userId
+     */
+    private void getWaitOrdersByOkHttp(int userId) {
+        FormBody formBody = new FormBody.Builder()
+                .add("state", 0 + "").add("userId", userId + "").build();
+        Request request = new Request.Builder()
+                .url(Constant.BASE_URL + "getOrderDoing")
+                .post(formBody)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+
+                Message message = new Message();
+                message.what = 666;
+                message.obj = string;
+                handler.sendMessage(message);
+            }
+        });
     }
 }

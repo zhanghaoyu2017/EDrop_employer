@@ -32,7 +32,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_acceptorder_name"
+                android:id="@+id/tv_doneorder_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
@@ -42,7 +42,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_acceptorder_phone"
+                android:id="@+id/tv_doneorder_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_5"
@@ -51,7 +51,7 @@
                 android:textSize="@dimen/size_18" />
 
             <TextView
-                android:id="@+id/tv_acceptorder_address"
+                android:id="@+id/tv_doneorder_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="河北省石家庄市裕华区河北师范大学新校区"
@@ -69,7 +69,7 @@
                     android:src="@drawable/servicetime" />
 
                 <TextView
-                    android:id="@+id/tv_acceptorder_time"
+                    android:id="@+id/tv_doneorder_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_10"
@@ -102,7 +102,7 @@
             android:textSize="@dimen/size_16" />
 
         <TextView
-            android:id="@+id/tv_acceptorder_number"
+            android:id="@+id/tv_doneorder_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2e8477e0fc0a-4eaf-9194-82e8c9f5016"

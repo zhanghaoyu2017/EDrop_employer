@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.edrop.edrop_employer.R;
 import net.edrop.edrop_employer.adapter.AcceptOrderAdapter;
+import net.edrop.edrop_employer.adapter.DoneOrderAdapter;
 import net.edrop.edrop_employer.adapter.MyPagerAdapter;
 import net.edrop.edrop_employer.adapter.WaitOrderAdapter;
 import net.edrop.edrop_employer.entity.Order;
@@ -87,6 +88,16 @@ public class ServicePageFragment extends Fragment {
                 refreshLayout2.finishRefresh();
                 WaitOrderAdapter adapter = new WaitOrderAdapter(orderList2, view.getContext(), R.layout.item_waitorders_layout);
                 listView2.setAdapter(adapter);
+            }else if (msg.what ==1){
+                String json = (String) msg.obj;
+                orderList3 = new Gson().fromJson(json, new TypeToken<List<Order>>() {
+                }.getType());
+                Log.e("dddddddddddddddd", orderList3.toString());
+                refreshLayout3.finishRefresh();
+                DoneOrderAdapter adapter = new DoneOrderAdapter(orderList3, view.getContext(), R.layout.item_doneorders_layout);
+                listView3.setAdapter(adapter);
+
+
             }
 
         }
@@ -106,6 +117,12 @@ public class ServicePageFragment extends Fragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                getWaitOrdersByOkHttp(userId);
+            }
+        });
+        refreshLayout3.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                getDoneOrdersByOkHttp(userId);
             }
         });
 
@@ -147,6 +164,9 @@ public class ServicePageFragment extends Fragment {
                     case 1:
                         getWaitOrdersByOkHttp(userId);
                         break;
+                    case 2:
+                        getDoneOrdersByOkHttp(userId);
+                        break;
                 }
             }
 
@@ -164,6 +184,35 @@ public class ServicePageFragment extends Fragment {
 
     }
 
+
+    /**\
+     * 获取当前工作人员已完成的订单
+     * @param userId
+     */
+    private void getDoneOrdersByOkHttp(int userId) {
+        FormBody formBody = new FormBody.Builder()
+                .add("state", 1 + "").add("userId",userId+"").build();
+        Request request = new Request.Builder()
+                .url(Constant.BASE_URL + "getOrderFinish")
+                .post(formBody)
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                Message message = new Message();
+                message.what = 1;
+                message.obj = string;
+                handler.sendMessage(message);
+            }
+        });
+    }
     /**
      * 获取当前工作人员的未完成订单
      * @param userId

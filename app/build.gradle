@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //开启多Dex
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -92,4 +94,5 @@ dependencies {
     //极光推送
     implementation files('libs/jcore-android-2.1.6.jar')
     implementation files('libs/jpush-android-3.3.9.jar')
+    implementation files('libs/BaiduLBS_Android.jar')
 }

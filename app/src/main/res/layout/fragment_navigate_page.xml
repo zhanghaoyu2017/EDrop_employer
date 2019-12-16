@@ -3,10 +3,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
-    <TextView
-        android:gravity="center"
-        android:text="该功能暂未开放，请等待..."
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/btn_start_navigate"
+        android:text="开启导航"
+        android:background="@drawable/btn_login_green_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -3,13 +3,17 @@ package net.edrop.edrop_employer.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
+import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -48,12 +52,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pub.devrel.easypermissions.EasyPermissions;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -65,7 +71,7 @@ import static net.edrop.edrop_employer.utils.Constant.LOGIN_SUCCESS;
 import static net.edrop.edrop_employer.utils.Constant.PASSWORD_WRONG;
 import static net.edrop.edrop_employer.utils.Constant.USER_NO_EXISTS;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
     private TextInputLayout usernameWrapper;
     private TextInputLayout passwordWrapper;
     private Button btnLogin;
@@ -108,6 +114,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     };
+    private String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         sharedPreferences = new SharedPreferencesUtils(LoginActivity.this, "loginInfo");
         isAuto();
+        initPermission();
         // Tencent类是SDK的主要实现类，开发者可通过Tencent类访问腾讯开放的OpenAPI。
         // 其中APP_ID是分配给第三方应用的appid，类型为String。
         listener = new BaseUiListener();
@@ -123,6 +133,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initView();
         setListener();
         okHttpClient = new OkHttpClient();
+    }
+
+    private void initPermission() {
+        if (EasyPermissions.hasPermissions(this, permissions)) {
+            //已经打开权限
+            Toast.makeText(this, "已经申请相关权限", Toast.LENGTH_SHORT).show();
+        } else {
+            //没有打开相关权限、申请权限
+            EasyPermissions.requestPermissions(this, "需要获取您网络权限", 1, permissions);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    //成功打开权限
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Toast.makeText(this, "相关权限获取成功", Toast.LENGTH_SHORT).show();
+    }
+
+    //用户未同意权限
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        Toast.makeText(this, "请同意相关权限，否则功能无法使用", Toast.LENGTH_SHORT).show();
     }
 
     //判断是否是第一次登陆
@@ -217,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("username", username);
                     editor.putString("password", password);
                     editor.putBoolean("isAuto", true);
-                    login(username,password);
+                    login(username, password);
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -228,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("username", username);
                     editor.putString("password", password);
                     editor.putBoolean("isAuto", true);
-                    login(username,password);
+                    login(username, password);
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -260,11 +298,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 登录用户（异步）
      */
-    private void login(final String username, final String password){
+    private void login(final String username, final String password) {
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(final Subscriber<? super String> subscriber) {
-                EMClient.getInstance().login(username,password,new EMCallBack() {//回调
+                EMClient.getInstance().login(username, password, new EMCallBack() {//回调
                     @Override
                     public void onSuccess() {
                         EMClient.getInstance().groupManager().loadAllGroups();
@@ -280,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onError(int code, String message) {
-                        subscriber.onNext("登录聊天服务器失败："+code);
+                        subscriber.onNext("登录聊天服务器失败：" + code);
                     }
                 });
             }
@@ -349,7 +387,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (mTencent != null && mTencent.isSessionValid()) {
                 IUiListener listener = new IUiListener() {
                     @Override
-                    public void onError(UiError e) { }
+                    public void onError(UiError e) {
+                    }
 
                     @Override
                     public void onComplete(final Object response) {
@@ -431,15 +470,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         User user = new Gson().fromJson(userJson, User.class);
 
                         SharedPreferences.Editor editor = sharedPreferences.getEditor();
-                        editor.putInt("userId",user.getId());
-                        editor.putString("gender",user.getGender());
-                        editor.putString("phone",user.getPhone());
+                        editor.putInt("userId", user.getId());
+                        editor.putString("gender", user.getGender());
+                        editor.putString("phone", user.getPhone());
                         editor.putString("username", user.getUsername());
                         editor.putString("password", user.getPassword());
                         editor.putString("imgName", user.getImgname());
                         editor.putString("imgPath", user.getImgpath());
                         editor.putString("address", user.getAddress());
-                        editor.putString("detailAddress",user.getDetailAddress());
+                        editor.putString("detailAddress", user.getDetailAddress());
                         editor.putBoolean("isAuto", true);
                         editor.commit();
                         Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);

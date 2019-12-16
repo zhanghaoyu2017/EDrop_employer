@@ -12,8 +12,6 @@ import net.edrop.edrop_employer.activity.LoginActivity;
 
 import java.util.ArrayList;
 
-
-
 public class MyPagerAdapter extends PagerAdapter {
     private ArrayList<View> viewLists;
     private Context context;

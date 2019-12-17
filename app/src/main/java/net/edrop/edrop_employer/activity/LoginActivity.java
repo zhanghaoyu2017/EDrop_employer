@@ -250,31 +250,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 username = edUserName.getText().toString().trim();
                 password = edPwd.getText().toString().trim();
-                if (username.equals("zs") && password.equals("123456")) {
-                    SharedPreferences.Editor editor = sharedPreferences.getEditor();
-                    editor.putString("username", username);
-                    editor.putString("password", password);
-                    editor.putBoolean("isAuto", true);
-                    login(username, password);
-                    editor.commit();
-                    Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                } else if (username.equals("ls") && password.equals("123456")) {
-                    SharedPreferences.Editor editor = sharedPreferences.getEditor();
-                    editor.putString("username", username);
-                    editor.putString("password", password);
-                    editor.putBoolean("isAuto", true);
-                    login(username, password);
-                    editor.commit();
-                    Intent intent = new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                } else if (isSelected) {
+                if (isSelected) {
                     username = edUserName.getText().toString();
                     password = edPwd.getText().toString();
+                    login(username, password);
                     OkHttpLogin(username, password);
                 } else {
                     Toast.makeText(LoginActivity.this, "请检查用户名或密码", Toast.LENGTH_SHORT).show();
@@ -308,7 +287,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         EMClient.getInstance().groupManager().loadAllGroups();
                         EMClient.getInstance().chatManager().loadAllConversations();
                         startActivity(new Intent(LoginActivity.this, net.edrop.edrop_employer.activity.Main2Activity.class));
-                        subscriber.onNext("登录聊天服务器成功");
+                        subscriber.onNext("登录环信聊天服务器成功");
                     }
 
                     @Override
@@ -318,7 +297,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onError(int code, String message) {
-                        subscriber.onNext("登录聊天服务器失败：" + code);
+                        subscriber.onNext("登录环信聊天服务器失败：" + code);
                     }
                 });
             }

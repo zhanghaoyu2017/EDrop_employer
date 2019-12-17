@@ -145,4 +145,5 @@ public class NavigatePageFragment extends Fragment {
         ((Activity) mContext).getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         ((Activity) mContext).getWindow().setAttributes(lp);
     }
+
 }

@@ -291,7 +291,10 @@ public class MainMenuLeftFragment extends Fragment {
                     }
                     break;
                 case R.id.businessCooperation:
-                    Toast.makeText(getActivity(), "生意合作", Toast.LENGTH_SHORT).show();
+                    //跳转到商务合作的详细页面
+                    intent = new Intent(getContext(), CooperationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     break;
                 case R.id.aboutEDrop:
                     //跳转到详细介绍页面

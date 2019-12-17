@@ -102,8 +102,9 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.VersionActivity" />
         <activity android:name=".activity.ClearCacheActivity" />
-        <activity android:name=".activity.PhoneLoginActivity"/>
+        <activity android:name=".activity.PhoneLoginActivity" />
         <activity android:name=".activity.TestPhoneNumActivity" />
+        <activity android:name=".activity.CooperationActivity" />
         <!-- QQ登录配置 start -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -162,8 +163,7 @@
         </provider>
 
         <activity android:name=".activity.ForgetPsdActivity" />
-        <activity android:name=".activity.MyMoneyActivity"/>
-
+        <activity android:name=".activity.MyMoneyActivity" />
 
 
         <!--极光推送-->

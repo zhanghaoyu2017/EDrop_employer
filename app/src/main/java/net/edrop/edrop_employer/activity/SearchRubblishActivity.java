@@ -264,7 +264,8 @@ public class SearchRubblishActivity extends AppCompatActivity {
         for (int i = 0; i < historys.length; i++) {
             history.add(historys[i]);
         }
-        for (int i = 0; i < history.size(); i++) {
+
+        for (int i = history.size()-1; i >=0; i--) {
             final Button button = new Button(this);
             button.setText(history.get(i));
             button.setTextSize(10);
@@ -273,7 +274,6 @@ public class SearchRubblishActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    OkHttpQuery(button.getText().toString());
                     SharedPreferencesUtils sharedPreferences = new SharedPreferencesUtils(SearchRubblishActivity.this,"searchHistory");
                     SharedPreferences.Editor editor = sharedPreferences.getEditor();
                     String history = sharedPreferences.getString("history", "");
@@ -282,8 +282,7 @@ public class SearchRubblishActivity extends AppCompatActivity {
                     }else {
                         editor.putString("history",history+","+button.getText().toString());
                     }
-                    editor.commit();
-                    OkHttpQuery(button.getText().toString());
+                    mAutoCompleteTextView.setText(button.getText().toString());
 //                    performItemClick(view);
                 }
             });

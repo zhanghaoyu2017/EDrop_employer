@@ -3,6 +3,7 @@ package net.edrop.edrop_employer;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Process;
 import android.support.annotation.NonNull;
@@ -44,6 +45,7 @@ public class MyApplication extends Application {
         }
         EMClient.getInstance().init(this, options);
         EMClient.getInstance().setDebugMode(true);
+
     }
 
     public static Application getInstance2(){

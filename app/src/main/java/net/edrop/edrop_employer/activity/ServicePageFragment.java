@@ -1,5 +1,6 @@
 package net.edrop.edrop_employer.activity;
 
+import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,6 +32,9 @@ import net.edrop.edrop_employer.adapter.WaitOrderAdapter;
 import net.edrop.edrop_employer.entity.Order;
 import net.edrop.edrop_employer.utils.Constant;
 import net.edrop.edrop_employer.utils.SharedPreferencesUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,9 +151,17 @@ public class ServicePageFragment extends Fragment {
         initView();
         initTabLayout();
         setRefreshListeners();
-
+        //注册事件订阅者
+        EventBus.getDefault().register(this);
         return view;
     }
+    @Subscribe(sticky = true)
+    public void onMessageReceive(String event){
+        if (event.equals("update")){
+            getAcceptOrdersByOkHttp();
+        }
+    }
+
 
     private void setmTabLayoutListener() {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -246,7 +259,7 @@ public class ServicePageFragment extends Fragment {
     /**
      * 获取全部代接订单
      */
-    private void getAcceptOrdersByOkHttp() {
+    public void getAcceptOrdersByOkHttp() {
         FormBody formBody = new FormBody.Builder()
                 .add("state", -1 + "").build();
         Request request = new Request.Builder()

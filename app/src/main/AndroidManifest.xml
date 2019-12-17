@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="net.edrop.edrop_employer">
 
-    <!--极光推送-->
+    <!-- 极光推送 -->
     <!-- Required -->
     <!-- 自定义定义一个权限 -->
     <permission
@@ -102,7 +102,7 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.VersionActivity" />
         <activity android:name=".activity.ClearCacheActivity" />
-        <activity android:name=".activity.PhoneLoginActivity"/>
+        <activity android:name=".activity.PhoneLoginActivity" />
         <activity android:name=".activity.TestPhoneNumActivity" />
         <!-- QQ登录配置 start -->
         <activity
@@ -124,6 +124,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- QQ登录配置 end -->
+
 
         <!-- 设置环信应用的AppKey -->
         <meta-data
@@ -162,11 +163,9 @@
         </provider>
 
         <activity android:name=".activity.ForgetPsdActivity" />
-        <activity android:name=".activity.MyMoneyActivity"/>
+        <activity android:name=".activity.MyMoneyActivity" />
 
-
-
-        <!--极光推送-->
+        <!-- 极光推送 -->
         <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"

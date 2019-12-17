@@ -1,7 +1,10 @@
 package net.edrop.edrop_employer.jpush;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
 
 import cn.jpush.android.api.CustomMessage;
 import cn.jpush.android.api.NotificationMessage;
@@ -37,8 +40,7 @@ public class JPushMessageReceiver extends cn.jpush.android.service.JPushMessageR
 //        context.startActivity(intent);
         String str = customMessage.message;
         if (str.equals("update")){
-            Log.e("resttttttttttttttt", str);
-
+            EventBus.getDefault().postSticky("update");
         }
     }
 }

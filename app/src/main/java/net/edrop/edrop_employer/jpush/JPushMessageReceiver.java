@@ -35,5 +35,10 @@ public class JPushMessageReceiver extends cn.jpush.android.service.JPushMessageR
 //        intent.putExtra("content",customMessage.message);//自定义消息内容
 //        intent.putExtra("extras",customMessage.extra);//自定义消息的额外字段（json格式字符串）
 //        context.startActivity(intent);
+        String str = customMessage.message;
+        if (str.equals("update")){
+            Log.e("resttttttttttttttt", str);
+
+        }
     }
 }

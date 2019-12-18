@@ -87,7 +87,7 @@ public class MsgPageFragment extends Fragment {
                             .load(BASE_URL.substring(0,BASE_URL.length()-1)+imgpath +"/"+ imgname)
                             .apply(options)
                             .into(imageView);
-                    itemBean.setHeadImg(imageView);
+//                    itemBean.setHeadImg(imageView);
                     itemBean.setDate(getDate());
                     datas.add(itemBean);
                     swipeAdapter.notifyDataSetChanged();

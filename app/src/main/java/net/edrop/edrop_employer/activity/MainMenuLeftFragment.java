@@ -190,7 +190,7 @@ public class MainMenuLeftFragment extends Fragment {
 
     private void getImg() {
         //2.创建Request对象
-        Request request = new Request.Builder().url(BASE_URL + "getUserInfoById?id=" + sharedPreferences.getInt("userId")).build();
+        Request request = new Request.Builder().url(BASE_URL + "getEmployeeInfoById?id=" + sharedPreferences.getInt("userId")).build();
         //3.创建Call对象
         final Call call = okHttpClient.newCall(request);
 

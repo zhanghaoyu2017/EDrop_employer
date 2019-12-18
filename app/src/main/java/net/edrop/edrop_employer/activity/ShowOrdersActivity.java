@@ -99,7 +99,7 @@ public class ShowOrdersActivity extends Activity {
                 FormBody formBody = new FormBody.Builder()
                         .add("userId", userId + "").build();
                 Request request = new Request.Builder()
-                        .url(Constant.BASE_URL + "getOrderById")
+                        .url(Constant.BASE_URL + "getOrderByEId")
                         .post(formBody)
                         .build();
                 Call call = okHttpClient.newCall(request);

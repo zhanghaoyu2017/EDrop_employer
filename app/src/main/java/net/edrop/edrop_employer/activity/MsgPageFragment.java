@@ -115,7 +115,7 @@ public class MsgPageFragment extends Fragment {
                 //刷新信息栏
                 FormBody formBody = new FormBody.Builder()
                         .add("employeeId", userId+"")
-                        .add("userId", userId + "")
+                        .add("userId",  "")
                         .build();
                 Request request = new Request.Builder()
                         .url(BASE_URL + "getContactsById")

@@ -2,6 +2,8 @@ package net.edrop.edrop_employer.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,23 +11,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.edrop.edrop_employer.R;
 import net.edrop.edrop_employer.adapter.MsgSwipeAdapter;
+import net.edrop.edrop_employer.entity.Contacts;
 import net.edrop.edrop_employer.entity.MsgItemBean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static net.edrop.edrop_employer.utils.Constant.BASE_URL;
 
 /**
  * Created by mysterious
@@ -34,6 +52,7 @@ import java.util.List;
  * Time: 16:40
  */
 public class MsgPageFragment extends Fragment {
+    private OkHttpClient okHttpClient;
     private LinearLayout llKong;
     private SmartRefreshLayout refeshLayout;
     private ListView listView;
@@ -41,6 +60,34 @@ public class MsgPageFragment extends Fragment {
     private MsgSwipeAdapter swipeAdapter;
     private View myView;
     private static final String SECTION_STRING = "fragment_string";
+    private int userId;
+    private int employeeId;
+    private String userName;
+    private String employeeName;
+    private List<Contacts> listContacts;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what==1){
+                datas.clear();
+                swipeAdapter.notifyDataSetChanged();
+                String json = (String) msg.obj;
+                listContacts= new Gson().fromJson(json, new TypeToken<List<Contacts>>() {}.getType());
+                for (int i = 0; i < listContacts.size(); i++) {
+                    userName=listContacts.get(i).getUser().getUsername();
+                    employeeName=listContacts.get(i).getEmployee().getUsername();
+                    String imgname = listContacts.get(i).getEmployee().getImgname();
+                    String imgpath = listContacts.get(i).getEmployee().getImgpath();
+                    MsgItemBean itemBean = new MsgItemBean();
+                    itemBean.setNickName(userName);
+                    itemBean.setMsg("Message");
+                    itemBean.setDate(getDate());
+                    datas.add(itemBean);
+                    swipeAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    };
 
     public static MsgPageFragment newInstance(String sectionNumber) {
         MsgPageFragment fragment = new MsgPageFragment();
@@ -64,10 +111,33 @@ public class MsgPageFragment extends Fragment {
         llKong.setOnClickListener(new MyLinstener());
         refeshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                 //刷新信息栏
-                RefreshMsgTask refreshMsgTask = new RefreshMsgTask();
-                refreshMsgTask.execute();
+                FormBody formBody = new FormBody.Builder()
+                        .add("employeeId", userId+"")
+                        .add("userId", userId + "")
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_URL + "getContactsById")
+                        .post(formBody)
+                        .build();
+                Call call = okHttpClient.newCall(request);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        refreshLayout.finishRefresh();//结束加载更多的动画
+                        Message message = new Message();
+                        message.what = 1;
+                        message.obj = string;
+                        handler.sendMessage(message);
+                    }
+                });
             }
         });
     }
@@ -77,28 +147,6 @@ public class MsgPageFragment extends Fragment {
             listView.smoothScrollToPosition(pos);
         } else {
             listView.setSelection(pos);
-        }
-    }
-
-    private class RefreshMsgTask extends AsyncTask{
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            //更新视图
-
-            swipeAdapter.notifyDataSetChanged();
-            //结束加载更多的动画
-            refeshLayout.finishRefresh();
         }
     }
 
@@ -113,13 +161,12 @@ public class MsgPageFragment extends Fragment {
         }
     }
     private void initData() {
-        for (int i = 0; i < 2; i++) {
-            MsgItemBean itemBean = new MsgItemBean();
-            itemBean.setNickName("昵称 " + (i + 1));
-            itemBean.setMsg("Message " + i);
-            itemBean.setDate(getDate());
-            datas.add(itemBean);
-        }
+        MsgItemBean itemBean = new MsgItemBean();
+        itemBean.setNickName("kxh");
+        itemBean.setMsg("Message");
+        itemBean.setDate(getDate());
+        datas.add(itemBean);
+        swipeAdapter.notifyDataSetChanged();
     }
 
     private String getDate() {
@@ -144,6 +191,7 @@ public class MsgPageFragment extends Fragment {
     }
 
     private void initView() {
+        okHttpClient = new OkHttpClient();
         //获取智能刷新布局
         llKong=myView.findViewById(R.id.ll_kong);
         refeshLayout =myView.findViewById(R.id.smart_refesh);

@@ -1,5 +1,7 @@
 package net.edrop.edrop_employer.entity;
 
+import android.widget.ImageView;
+
 /**
  * Created by mysterious
  * User: mysterious
@@ -10,6 +12,7 @@ public class MsgItemBean {
     private String nickName;
     private String msg;
     private String date;
+    private ImageView headImg;
 
     public String getDate() {
         return date;
@@ -33,5 +36,13 @@ public class MsgItemBean {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public ImageView getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(ImageView headImg) {
+        this.headImg = headImg;
     }
 }

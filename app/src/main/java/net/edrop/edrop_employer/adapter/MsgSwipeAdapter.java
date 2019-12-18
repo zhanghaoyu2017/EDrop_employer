@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,10 +107,10 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         swipeLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Intent intent = new Intent(context, ChatViewActivity.class);
-                intent.putExtra("userId","ls");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ChatViewActivity.class);
+//                intent.putExtra("userId","ls");
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                context.startActivity(intent);
                 return false;
             }
         });
@@ -130,6 +131,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
             viewHolder=new ViewHolder();
             viewHolder.nickName=(TextView) convertView.findViewById(R.id.tv_nickname);
             viewHolder.msg=(TextView) convertView.findViewById(R.id.tv_msg);
+            viewHolder.headImg = convertView.findViewById(R.id.head_default_img);
             viewHolder.talkDate=(TextView) convertView.findViewById(R.id.tv_talk_date);
             viewHolder.swipeOpen=(TextView) convertView.findViewById(R.id.swipe_open);
             viewHolder.swipeDelete=(TextView) convertView.findViewById(R.id.swipe_delete);
@@ -139,6 +141,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         }
         viewHolder.nickName.setText(list.get(position).getNickName());
         viewHolder.msg.setText(list.get(position).getMsg());
+        viewHolder.headImg.setImageDrawable(list.get(position).getHeadImg().getDrawable());
         viewHolder.talkDate.setText(list.get(position).getDate());
 
         viewHolder.swipeDelete.setOnClickListener(new View.OnClickListener() {
@@ -153,10 +156,10 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         viewHolder.swipeOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ChatViewActivity.class);
-                intent.putExtra("userId","ls");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ChatViewActivity.class);
+//                intent.putExtra("userId","ls");
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                context.startActivity(intent);
             }
         });
     }
@@ -179,6 +182,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
     private class ViewHolder{
         private TextView nickName;
         private TextView msg;
+        private ImageView headImg;
         private TextView talkDate;
         private TextView swipeDelete;
         private TextView swipeOpen;

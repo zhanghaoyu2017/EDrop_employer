@@ -76,11 +76,18 @@ public class MsgPageFragment extends Fragment {
                 for (int i = 0; i < listContacts.size(); i++) {
                     userName=listContacts.get(i).getUser().getUsername();
                     employeeName=listContacts.get(i).getEmployee().getUsername();
-                    String imgname = listContacts.get(i).getEmployee().getImgname();
-                    String imgpath = listContacts.get(i).getEmployee().getImgpath();
+                    String imgname = listContacts.get(i).getUser().getImgname();
+                    String imgpath = listContacts.get(i).getUser().getImgpath();
                     MsgItemBean itemBean = new MsgItemBean();
                     itemBean.setNickName(userName);
                     itemBean.setMsg("Message");
+                    ImageView imageView= myView.findViewById(R.id.lalala);
+                    RequestOptions options = new RequestOptions().centerCrop();
+                    Glide.with(myView.getContext())
+                            .load(BASE_URL.substring(0,BASE_URL.length()-1)+imgpath +"/"+ imgname)
+                            .apply(options)
+                            .into(imageView);
+                    itemBean.setHeadImg(imageView);
                     itemBean.setDate(getDate());
                     datas.add(itemBean);
                     swipeAdapter.notifyDataSetChanged();

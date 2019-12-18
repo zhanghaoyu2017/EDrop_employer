@@ -66,34 +66,7 @@ public class MsgPageFragment extends Fragment {
     private String employeeName;
     private List<Contacts> listContacts;
     private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what==1){
-                datas.clear();
-                swipeAdapter.notifyDataSetChanged();
-                String json = (String) msg.obj;
-                listContacts= new Gson().fromJson(json, new TypeToken<List<Contacts>>() {}.getType());
-                for (int i = 0; i < listContacts.size(); i++) {
-                    userName=listContacts.get(i).getUser().getUsername();
-                    employeeName=listContacts.get(i).getEmployee().getUsername();
-                    String imgname = listContacts.get(i).getUser().getImgname();
-                    String imgpath = listContacts.get(i).getUser().getImgpath();
-                    MsgItemBean itemBean = new MsgItemBean();
-                    itemBean.setNickName(userName);
-                    itemBean.setMsg("一起来交流吧");
-                    ImageView imageView= myView.findViewById(R.id.lalala);
-                    RequestOptions options = new RequestOptions().centerCrop();
-                    Glide.with(myView.getContext())
-                            .load(BASE_URL.substring(0,BASE_URL.length()-1)+imgpath +"/"+ imgname)
-                            .apply(options)
-                            .into(imageView);
-//                    itemBean.setHeadImg(imageView);
-                    itemBean.setDate(getDate());
-                    datas.add(itemBean);
-                    swipeAdapter.notifyDataSetChanged();
-                }
-            }
-        }
+
     };
 
     public static MsgPageFragment newInstance(String sectionNumber) {
@@ -118,32 +91,10 @@ public class MsgPageFragment extends Fragment {
         refeshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
-                //刷新信息栏
-                FormBody formBody = new FormBody.Builder()
-                        .add("employeeId", userId+"")
-                        .add("userId",  "")
-                        .build();
-                Request request = new Request.Builder()
-                        .url(BASE_URL + "getContactsById")
-                        .post(formBody)
-                        .build();
-                Call call = okHttpClient.newCall(request);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String string = response.body().string();
-                        refreshLayout.finishRefresh();//结束加载更多的动画
-                        Message message = new Message();
-                        message.what = 1;
-                        message.obj = string;
-                        handler.sendMessage(message);
-                    }
-                });
+                datas.clear();
+                swipeAdapter.updataData();
+                swipeAdapter.notifyDataSetChanged();
+                refeshLayout.finishRefresh();
             }
         });
     }
@@ -159,6 +110,8 @@ public class MsgPageFragment extends Fragment {
     private void initData() {
         SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(myView.getContext(), "loginInfo");
         userId = loginInfo.getInt("userId");
+        swipeAdapter.updataData();
+        swipeAdapter.notifyDataSetChanged();
     }
 
     private String getDate() {

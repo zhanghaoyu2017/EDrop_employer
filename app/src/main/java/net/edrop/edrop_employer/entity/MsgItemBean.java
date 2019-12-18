@@ -12,7 +12,7 @@ public class MsgItemBean {
     private String nickName;
     private String msg;
     private String date;
-    private ImageView headImg;
+    private String headImg;
 
     public String getDate() {
         return date;
@@ -38,11 +38,11 @@ public class MsgItemBean {
         this.msg = msg;
     }
 
-    public ImageView getHeadImg() {
+    public String getHeadImg() {
         return headImg;
     }
 
-    public void setHeadImg(ImageView headImg) {
+    public void setHeadImg(String headImg) {
         this.headImg = headImg;
     }
 }

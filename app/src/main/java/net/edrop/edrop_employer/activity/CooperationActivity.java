@@ -14,7 +14,6 @@ import net.edrop.edrop_employer.utils.SystemTransUtil;
 import static com.mob.MobSDK.getContext;
 import static net.edrop.edrop_employer.activity.MainMenuLeftFragment.drawableToBitmap;
 
-
 /**
  * Created by 李诗凡.
  * User: sifannnn
@@ -42,7 +41,8 @@ public class CooperationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ShareAppToOther shareAppToOther = new ShareAppToOther(getContext());
-                shareAppToOther.shareWeChatFriendCircle("EDrop", "EDrop邀请您的参与", drawableToBitmap(getResources().getDrawable(R.drawable.logo)));
+                shareAppToOther.shareWeChatFriendCircle("EDrop", "EDrop邀请您的参与，下载地址：https://www.lanzous.com/b0aqeodib \n" +
+                        "密码:90rv", drawableToBitmap(getResources().getDrawable(R.drawable.logo)));
             }
         });
         imageViewback.setOnClickListener(new View.OnClickListener() {

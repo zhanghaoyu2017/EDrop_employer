@@ -65,12 +65,15 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter {
                 for (int i = 0; i < listContacts.size(); i++) {
                     String imgname = listContacts.get(i).getUser().getImgname();
                     String imgpath = listContacts.get(i).getUser().getImgpath();
+                    String imgname1 = listContacts.get(i).getEmployee().getImgname();
+                    String imgpath1 = listContacts.get(i).getEmployee().getImgpath();
                     MsgItemBean itemBean = new MsgItemBean();
                     itemBean.setUserId(listContacts.get(i).getUser().getId());
                     itemBean.setEmployeeId(listContacts.get(i).getEmployee().getId());
                     itemBean.setNickName(listContacts.get(i).getUser().getUsername());
                     itemBean.setMsg("一起来交流吧");
-                    itemBean.setHeadImg(BASE_URL.substring(0, BASE_URL.length() - 1) + imgpath + "/" + imgname);
+                    itemBean.setEmployeeHeadImg(BASE_URL.substring(0, BASE_URL.length() - 1) + imgpath1 + "/" + imgname1);
+                    itemBean.setUserHeadImg(BASE_URL.substring(0, BASE_URL.length() - 1) + imgpath + "/" + imgname);
                     itemBean.setDate(getDate());
                     list.add(itemBean);
                     notifyDataSetChanged();
@@ -209,7 +212,8 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter {
                 Intent intent = new Intent(context, ChatViewActivity.class);
                 intent.putExtra("userId",list.get(position).getUserId());
                 intent.putExtra("userName",list.get(position).getNickName());
-                intent.putExtra("headImg",list.get(position).getHeadImg());
+                intent.putExtra("employeeHeadImg",list.get(position).getEmployeeHeadImg());
+                intent.putExtra("userHeadImg",list.get(position).getUserHeadImg());
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 return false;
@@ -245,7 +249,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter {
         viewHolder.msg.setText(list.get(position).getMsg());
         RequestOptions options = new RequestOptions().circleCrop();
         Glide.with(context)
-                .load(list.get(position).getHeadImg())
+                .load(list.get(position).getUserHeadImg())
                 .apply(options)
                 .into(viewHolder.headImg);
         viewHolder.talkDate.setText(list.get(position).getDate());
@@ -265,7 +269,8 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter {
                 Intent intent = new Intent(context, ChatViewActivity.class);
                 intent.putExtra("userId",list.get(position).getUserId());
                 intent.putExtra("userName",list.get(position).getNickName());
-                intent.putExtra("headImg",list.get(position).getHeadImg());
+                intent.putExtra("employeeHeadImg",list.get(position).getEmployeeHeadImg());
+                intent.putExtra("userHeadImg",list.get(position).getUserHeadImg());
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
             }

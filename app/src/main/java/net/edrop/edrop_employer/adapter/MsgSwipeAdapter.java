@@ -141,7 +141,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         }
         viewHolder.nickName.setText(list.get(position).getNickName());
         viewHolder.msg.setText(list.get(position).getMsg());
-        viewHolder.headImg.setImageDrawable(list.get(position).getHeadImg().getDrawable());
+//        viewHolder.headImg.setImageDrawable(list.get(position).getHeadImg().getDrawable());
         viewHolder.talkDate.setText(list.get(position).getDate());
 
         viewHolder.swipeDelete.setOnClickListener(new View.OnClickListener() {

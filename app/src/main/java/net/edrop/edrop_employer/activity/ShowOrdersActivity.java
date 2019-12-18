@@ -97,9 +97,9 @@ public class ShowOrdersActivity extends Activity {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                 FormBody formBody = new FormBody.Builder()
-                        .add("userId", userId + "").build();
+                        .add("eid", userId + "").build();
                 Request request = new Request.Builder()
-                        .url(Constant.BASE_URL + "getOrderByEId")
+                        .url(Constant.BASE_URL + "getOrdersByEmployeeId")
                         .post(formBody)
                         .build();
                 Call call = okHttpClient.newCall(request);

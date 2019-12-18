@@ -131,7 +131,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
             viewHolder=new ViewHolder();
             viewHolder.nickName=(TextView) convertView.findViewById(R.id.tv_nickname);
             viewHolder.msg=(TextView) convertView.findViewById(R.id.tv_msg);
-            viewHolder.headImg = convertView.findViewById(R.id.head_default_img);
+            viewHolder.headImg = (ImageView) convertView.findViewById(R.id.head_default_img);
             viewHolder.talkDate=(TextView) convertView.findViewById(R.id.tv_talk_date);
             viewHolder.swipeOpen=(TextView) convertView.findViewById(R.id.swipe_open);
             viewHolder.swipeDelete=(TextView) convertView.findViewById(R.id.swipe_delete);

@@ -29,6 +29,7 @@ import net.edrop.edrop_employer.R;
 import net.edrop.edrop_employer.adapter.MsgSwipeAdapter;
 import net.edrop.edrop_employer.entity.Contacts;
 import net.edrop.edrop_employer.entity.MsgItemBean;
+import net.edrop.edrop_employer.utils.SharedPreferencesUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class MsgPageFragment extends Fragment {
                     String imgpath = listContacts.get(i).getUser().getImgpath();
                     MsgItemBean itemBean = new MsgItemBean();
                     itemBean.setNickName(userName);
-                    itemBean.setMsg("Message");
+                    itemBean.setMsg("一起来交流吧");
                     ImageView imageView= myView.findViewById(R.id.lalala);
                     RequestOptions options = new RequestOptions().centerCrop();
                     Glide.with(myView.getContext())
@@ -156,12 +157,8 @@ public class MsgPageFragment extends Fragment {
     }
 
     private void initData() {
-        MsgItemBean itemBean = new MsgItemBean();
-        itemBean.setNickName("kxh");
-        itemBean.setMsg("Message");
-        itemBean.setDate(getDate());
-        datas.add(itemBean);
-        swipeAdapter.notifyDataSetChanged();
+        SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(myView.getContext(), "loginInfo");
+        userId = loginInfo.getInt("userId");
     }
 
     private String getDate() {

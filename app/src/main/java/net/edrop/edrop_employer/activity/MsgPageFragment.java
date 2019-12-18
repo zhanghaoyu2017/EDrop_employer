@@ -65,9 +65,6 @@ public class MsgPageFragment extends Fragment {
     private String userName;
     private String employeeName;
     private List<Contacts> listContacts;
-    private Handler handler = new Handler(){
-
-    };
 
     public static MsgPageFragment newInstance(String sectionNumber) {
         MsgPageFragment fragment = new MsgPageFragment();

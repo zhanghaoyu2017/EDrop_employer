@@ -45,34 +45,32 @@ import static net.edrop.edrop_employer.utils.Constant.BASE_URL;
  * Date: 2019/11/28
  * Time: 8:43
  */
-public class MsgSwipeAdapter extends BaseSwipeAdapter{
-    private OkHttpClient okHttpClient=new OkHttpClient();
+public class MsgSwipeAdapter extends BaseSwipeAdapter {
+    private OkHttpClient okHttpClient = new OkHttpClient();
     private Context context;
     private List<MsgItemBean> list;
     private int item_swipe_msg;
     private SwipeLayout swipeLayout;
     private int userId;
-    private int employeeId;
-    private String userName;
-    private String employeeName;
     private List<Contacts> listContacts;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==1){
+            if (msg.what == 1) {
                 list.clear();
                 notifyDataSetChanged();
                 String json = (String) msg.obj;
-                listContacts= new Gson().fromJson(json, new TypeToken<List<Contacts>>() {}.getType());
+                listContacts = new Gson().fromJson(json, new TypeToken<List<Contacts>>() {
+                }.getType());
                 for (int i = 0; i < listContacts.size(); i++) {
-                    userName=listContacts.get(i).getUser().getUsername();
-                    employeeName=listContacts.get(i).getEmployee().getUsername();
                     String imgname = listContacts.get(i).getUser().getImgname();
                     String imgpath = listContacts.get(i).getUser().getImgpath();
                     MsgItemBean itemBean = new MsgItemBean();
-                    itemBean.setNickName(userName);
+                    itemBean.setUserId(listContacts.get(i).getUser().getId());
+                    itemBean.setEmployeeId(listContacts.get(i).getEmployee().getId());
+                    itemBean.setNickName(listContacts.get(i).getUser().getUsername());
                     itemBean.setMsg("一起来交流吧");
-                    itemBean.setHeadImg(BASE_URL.substring(0,BASE_URL.length()-1)+imgpath +"/"+ imgname);
+                    itemBean.setHeadImg(BASE_URL.substring(0, BASE_URL.length() - 1) + imgpath + "/" + imgname);
                     itemBean.setDate(getDate());
                     list.add(itemBean);
                     notifyDataSetChanged();
@@ -88,27 +86,27 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int date = c.get(Calendar.DATE);
-        if (c.get(Calendar.HOUR_OF_DAY)<10){
-            hour="0"+c.get(Calendar.HOUR_OF_DAY);
-        }else {
+        if (c.get(Calendar.HOUR_OF_DAY) < 10) {
+            hour = "0" + c.get(Calendar.HOUR_OF_DAY);
+        } else {
             hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
         }
-        if (c.get(Calendar.MINUTE)<10){
-            minute="0"+c.get(Calendar.MINUTE);
-        }else {
+        if (c.get(Calendar.MINUTE) < 10) {
+            minute = "0" + c.get(Calendar.MINUTE);
+        } else {
             minute = String.valueOf(c.get(Calendar.MINUTE));
         }
         int second = c.get(Calendar.SECOND);
-        return hour+":"+minute;
+        return hour + ":" + minute;
     }
 
-    public void updataData(){
+    public void updataData() {
         SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(context, "loginInfo");
         userId = loginInfo.getInt("userId");
         //刷新信息栏
         FormBody formBody = new FormBody.Builder()
-                .add("employeeId", userId+"")
-                .add("userId",  "")
+                .add("employeeId", userId + "")
+                .add("userId", "")
                 .build();
         Request request = new Request.Builder()
                 .url(BASE_URL + "getContactsById")
@@ -131,8 +129,9 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
             }
         });
     }
-    public MsgSwipeAdapter(Context context, int item_swipe_msg ,List<MsgItemBean> list) {
-        this.item_swipe_msg=item_swipe_msg;
+
+    public MsgSwipeAdapter(Context context, int item_swipe_msg, List<MsgItemBean> list) {
+        this.item_swipe_msg = item_swipe_msg;
         this.context = context;
         this.list = list;
     }
@@ -151,6 +150,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
     /**
      * 绑定布局
      * 和item布局进行关联的，并在这里设置swipeLayout的相关属性。
+     *
      * @param position
      * @param parent
      * @return
@@ -206,10 +206,12 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         swipeLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-//                Intent intent = new Intent(context, ChatViewActivity.class);
-//                intent.putExtra("userId","ls");
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, ChatViewActivity.class);
+                intent.putExtra("userId",list.get(position).getUserId());
+                intent.putExtra("userName",list.get(position).getNickName());
+                intent.putExtra("headImg",list.get(position).getHeadImg());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
                 return false;
             }
         });
@@ -220,23 +222,24 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
     /**
      * 绑定数据
      * 给item中的控件绑定数据，并根据需要设置事件等操作。
+     *
      * @param position
      * @param convertView
      */
     @Override
     public void fillValues(final int position, View convertView) {
-        ViewHolder viewHolder=null;
-        if (viewHolder==null){
-            viewHolder=new ViewHolder();
-            viewHolder.nickName=(TextView) convertView.findViewById(R.id.tv_nickname);
-            viewHolder.msg=(TextView) convertView.findViewById(R.id.tv_msg);
+        ViewHolder viewHolder = null;
+        if (viewHolder == null) {
+            viewHolder = new ViewHolder();
+            viewHolder.nickName = (TextView) convertView.findViewById(R.id.tv_nickname);
+            viewHolder.msg = (TextView) convertView.findViewById(R.id.tv_msg);
             viewHolder.headImg = (ImageView) convertView.findViewById(R.id.head_default_img);
-            viewHolder.talkDate=(TextView) convertView.findViewById(R.id.tv_talk_date);
-            viewHolder.swipeOpen=(TextView) convertView.findViewById(R.id.swipe_open);
-            viewHolder.swipeDelete=(TextView) convertView.findViewById(R.id.swipe_delete);
+            viewHolder.talkDate = (TextView) convertView.findViewById(R.id.tv_talk_date);
+            viewHolder.swipeOpen = (TextView) convertView.findViewById(R.id.swipe_open);
+            viewHolder.swipeDelete = (TextView) convertView.findViewById(R.id.swipe_delete);
             convertView.setTag(viewHolder);
-        }else {
-            viewHolder= (ViewHolder) convertView.getTag();
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.nickName.setText(list.get(position).getNickName());
         viewHolder.msg.setText(list.get(position).getMsg());
@@ -259,10 +262,12 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         viewHolder.swipeOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ChatViewActivity.class);
-//                intent.putExtra("userId","ls");
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, ChatViewActivity.class);
+                intent.putExtra("userId",list.get(position).getUserId());
+                intent.putExtra("userName",list.get(position).getNickName());
+                intent.putExtra("headImg",list.get(position).getHeadImg());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
             }
         });
     }
@@ -282,7 +287,7 @@ public class MsgSwipeAdapter extends BaseSwipeAdapter{
         return i;
     }
 
-    private class ViewHolder{
+    private class ViewHolder {
         private TextView nickName;
         private TextView msg;
         private ImageView headImg;

@@ -53,7 +53,6 @@ import static net.edrop.edrop_employer.utils.Constant.BASE_URL;
  */
 public class MsgPageFragment extends Fragment {
     private OkHttpClient okHttpClient;
-    private LinearLayout llKong;
     private SmartRefreshLayout refeshLayout;
     private ListView listView;
     private List<MsgItemBean> datas = new ArrayList<>();
@@ -115,7 +114,6 @@ public class MsgPageFragment extends Fragment {
     }
 
     private void setListener() {
-        llKong.setOnClickListener(new MyLinstener());
         refeshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -157,16 +155,6 @@ public class MsgPageFragment extends Fragment {
         }
     }
 
-    private class MyLinstener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.ll_kong:
-                    swipeAdapter.closeAllItems();
-                    break;
-            }
-        }
-    }
     private void initData() {
         MsgItemBean itemBean = new MsgItemBean();
         itemBean.setNickName("kxh");
@@ -200,7 +188,6 @@ public class MsgPageFragment extends Fragment {
     private void initView() {
         okHttpClient = new OkHttpClient();
         //获取智能刷新布局
-        llKong=myView.findViewById(R.id.ll_kong);
         refeshLayout =myView.findViewById(R.id.smart_refesh);
         listView = myView.findViewById(R.id.lv_main);
         swipeAdapter = new MsgSwipeAdapter(getContext(), R.layout.item_swipe_msg ,datas);

@@ -158,10 +158,11 @@
     <Button
         android:id="@+id/btn_setting_quit"
         android:layout_width="match_parent"
+
         android:layout_height="50dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="180dp"
         android:background="@drawable/btn_login_green_background"
         android:text="退出账号"
         android:textColor="#fff"

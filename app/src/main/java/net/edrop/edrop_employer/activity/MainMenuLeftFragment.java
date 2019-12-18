@@ -261,9 +261,9 @@ public class MainMenuLeftFragment extends Fragment {
                     SharedPreferencesUtils loginInfo = new SharedPreferencesUtils(myView.getContext(), "loginInfo");
                     int userId = loginInfo.getInt("userId");
                     FormBody formBody = new FormBody.Builder()
-                            .add("userId", userId + "").build();
+                            .add("eid", userId + "").build();
                     Request request = new Request.Builder()
-                            .url(Constant.BASE_URL + "getOrderById")
+                            .url(Constant.BASE_URL + "getOrdersByEmployeeId")
                             .post(formBody)
                             .build();
                     Call call = okHttpClient.newCall(request);
